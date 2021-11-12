@@ -4,6 +4,7 @@ import emoji
 import re
 
 from datetime import datetime
+from google.cloud import translate_v2 as translate
 
 BAD_SYMBOLS_RE = re.compile('[/(){}\[\]\|@_\+\-:*]')
 
@@ -34,3 +35,11 @@ def empty_str_to_na(s):
     if s == '':
         return np.nan
     return s
+
+
+def translate_text(text, target='en'):
+    translate_client = translate.Client()
+    result = translate_client.translate(text, target_language=target,
+                                        format_="text")
+
+    return result['translatedText']

@@ -49,3 +49,6 @@ ax.xaxis.set_major_formatter(formater)
 plot = sns.lineplot(data=timeserie, ax=ax)
 plot.set(xlabel='Creation time', ylabel='Number of tweets')
 fig.savefig('Img/timeserie.pdf', format='pdf')
+
+# Save results
+data.to_csv('../data/clean_text.tsv', sep='\t', index=False)
