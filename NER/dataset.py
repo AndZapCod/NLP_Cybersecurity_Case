@@ -2,11 +2,13 @@ import pickle
 import torch
 from torch.utils.data import Dataset
 
+START_OF_SEQUENCE = '<SOS>'
+END_OF_SEQUENCE = '<EOS>'
+
 
 class ToPaddedTensor:
 
     def __init__(self, length, pad_idx):
-
         self.length = length
         self.pad_idx = pad_idx
 
@@ -15,6 +17,20 @@ class ToPaddedTensor:
             self.idx2token = pickle.load(f)
             self.tag2idx = pickle.load(f)
             self.idx2tag = pickle.load(f)
+
+        start_idx = len(self.token2idx)
+        end_idx = len(self.token2idx) + 1
+        self.token2idx[START_OF_SEQUENCE] = start_idx
+        self.token2idx[END_OF_SEQUENCE] = end_idx
+        self.idx2token.append(START_OF_SEQUENCE)
+        self.idx2token.append(END_OF_SEQUENCE)
+
+        start_idx = len(self.tag2idx)
+        end_idx = len(self.tag2idx) + 1
+        self.tag2idx[START_OF_SEQUENCE] = start_idx
+        self.tag2idx[END_OF_SEQUENCE] = end_idx
+        self.idx2tag.append(START_OF_SEQUENCE)
+        self.idx2tag.append(END_OF_SEQUENCE)
 
     def words2idxs(self, tokens_list):
         return [self.token2idx[word] for word in tokens_list]
@@ -33,6 +49,10 @@ class ToPaddedTensor:
 
     def __call__(self, tok_tag):
         tok, tag = tok_tag
+
+        tok = [START_OF_SEQUENCE] + tok + [END_OF_SEQUENCE]
+        tag = [START_OF_SEQUENCE] + tag + [END_OF_SEQUENCE]
+
         tok = torch.Tensor(self.words2idxs(tok)).long()
         tag = torch.Tensor(self.tags2idxs(tag)).long()
         tok = self.padd_sequence(tok)
