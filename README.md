@@ -1,6 +1,6 @@
 # NLP_Cybersecurity_Case
 
-This is repository associated to the paper "An NLP-based pipeline to spot extremist networks in social media"
+This is the repository associated to the paper "An NLP-based pipeline to spot extremist networks in social media"
 
 # Quick Start
 
