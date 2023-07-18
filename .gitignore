@@ -133,3 +133,6 @@ dmypy.json
 
 # Credentials
 credentials/
+
+# Neo4j docker shared volumes
+Neo4j/

@@ -1,0 +1,8 @@
+Users that mention Police or Armed Force in negative tweets:
+
+MATCH (u:User) -[:Post]-> (t:Tweet) <-[:In]- (e:Entity) WHERE (e.token =~ '(?i)POLIC.A*' OR (e.token =~ '(?i)FUERZA*' AND e.token =~ '(?i)ARMADA*') OR (e.token =~ '(?i)FFAA')) AND t.polarity < 0 RETURN u,t,e
+
+Negative Users community:
+MATCH (u1:User)<-[:Follows]->(u:User)-[:Post]->(t:Tweet) WHERE t.polarity < 0 OR t.cluster = 1 RETURN u
+
+
